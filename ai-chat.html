@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat - RememberMe</title>
+    <link href="./dist/output.css" rel="stylesheet">
+    <link href="remember.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Override styles untuk AI Chat */
+        .chat-message-ai {
+            background-color: #1F2937 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #374151 !important;
+            border-radius: 1rem !important;
+            padding: 1rem !important;
+        }
+        
+        .chat-message-user {
+            background-color: #7749F8 !important;
+            color: #FFFFFF !important;
+            border-radius: 1rem !important;
+            padding: 1rem !important;
+        }
+        
+        .chat-input {
+            background-color: #1F2937 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #374151 !important;
+            border-radius: 2rem !important;
+        }
+        
+        .chat-input::placeholder {
+            color: #9CA3AF !important;
+        }
+        
+        .text-white {
+            color: #FFFFFF !important;
+        }
+        
+        #sendMessage {
+            background-color: #7749F8 !important;
+            color: white !important;
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            border: none !important;
+        }
+        
+        .input-container {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            width: 100% !important;
+        }
+    </style>
+</head>
+<body class="bg-background">
+    <div class="max-w-[390px] min-h-[844px] mx-auto bg-background relative">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 bg-background border-b border-gray-800 px-4 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold text-white animate-fade-in">AI Assistant</h1>
+                <button class="p-2 text-primary hover:scale-110 transition-transform" id="clearChat">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-4 pb-20">
+            <!-- Chat Messages -->
+            <div id="chatMessages" class="space-y-4 overflow-y-auto max-h-[calc(100vh-240px)]">
+                <!-- AI Message -->
+                <div class="flex gap-3 animate-slide-up">
+                    <div class="w-8 h-8 bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-white">
+                        🤖
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-800 p-3 rounded-2xl rounded-tl-none max-w-[80%] chat-message-ai">
+                            <p class="text-white">Hello! I'm your AI health assistant. How can I help you today?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Message Input -->
+        <div class="fixed bottom-[72px] left-0 right-0 bg-background border-t border-gray-800 p-4">
+            <div class="max-w-[390px] mx-auto input-container">
+                <input type="text" id="messageInput" placeholder="Type your message..." 
+                    class="flex-1 bg-gray-800 text-white rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary placeholder-gray-400 chat-input">
+                <button type="button" id="sendMessage" class="bg-primary text-white rounded-full hover:bg-secondary transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 w-[390px] bg-gray-800 border-t border-gray-700 px-6 py-3">
+            <div class="grid grid-cols-5 gap-4">
+                <a href="home.html" class="flex flex-col items-center text-gray-400 hover:text-primary transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <span class="text-xs mt-1">Home</span>
+                </a>
+                <a href="medicine.html" class="flex flex-col items-center text-gray-400 hover:text-primary transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                    <span class="text-xs mt-1">Medicine</span>
+                </a>
+                <a href="ai-chat.html" class="flex flex-col items-center text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                    <span class="text-xs mt-1">AI Chat</span>
+                </a>
+                <a href="sos.html" class="flex flex-col items-center text-gray-400 hover:text-primary transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span class="text-xs mt-1">SOS</span>
+                </a>
+                <a href="profile.html" class="flex flex-col items-center text-gray-400 hover:text-primary transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span class="text-xs mt-1">Profile</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <script type="module">
+        import { config } from './config.js';
+        
+        // Fungsi untuk chat
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendMessage');
+        const clearButton = document.getElementById('clearChat');
+        
+        // Menyimpan riwayat pesan untuk konteks
+        let messageHistory = [
+            {
+                role: "assistant",
+                content: "Hello! I'm your AI health assistant. How can I help you today?"
+            }
+        ];
+
+        // Add message to chat
+        function addMessage(message, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex gap-3 ${isUser ? 'justify-end' : ''} animate-slide-up`;
+            
+            const content = isUser ? `
+                <div class="flex-1">
+                    <div class="bg-primary text-white p-3 rounded-2xl rounded-tr-none max-w-[80%] ml-auto chat-message-user">
+                        <p class="text-white">${message}</p>
+                    </div>
+                </div>
+            ` : `
+                <div class="w-8 h-8 bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-white">
+                    🤖
+                </div>
+                <div class="flex-1">
+                    <div class="bg-gray-800 p-3 rounded-2xl rounded-tl-none max-w-[80%] chat-message-ai">
+                        <p class="text-white">${message}</p>
+                    </div>
+                </div>
+            `;
+            
+            messageDiv.innerHTML = content;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Simpan ke riwayat pesan
+            messageHistory.push({
+                role: isUser ? "user" : "assistant",
+                content: message
+            });
+            
+            // Batasi riwayat pesan
+            if (messageHistory.length > 10) {
+                messageHistory = messageHistory.slice(messageHistory.length - 10);
+            }
+        }
+
+        // Respon yang lebih bervariasi berdasarkan kata kunci
+        const keywordResponses = {
+            "obat": [
+                "Penting untuk selalu mengikuti petunjuk dokter saat mengonsumsi obat. Jangan pernah menghentikan atau mengubah dosis tanpa konsultasi.",
+                "Beberapa obat perlu diminum bersama makanan untuk menghindari efek samping pada lambung. Pastikan Anda memeriksa petunjuk penggunaan.",
+                "Jika Anda lupa minum obat, jangan langsung mengonsumsi dosis ganda. Hubungi dokter atau apoteker Anda untuk saran terbaik."
+            ],
+            "sakit": [
+                "Jika Anda mengalami sakit yang berlanjut lebih dari beberapa hari, segera konsultasikan dengan dokter.",
+                "Istirahat yang cukup dan minum banyak cairan sangat penting saat Anda sedang sakit.",
+                "Gejala yang Anda alami mungkin memerlukan pemeriksaan lebih lanjut. Sebaiknya konsultasikan dengan dokter."
+            ],
+            "vitamin": [
+                "Vitamin terbaik berasal dari makanan seimbang. Pastikan diet Anda mengandung banyak buah dan sayuran.",
+                "Vitamin D sangat penting untuk kesehatan tulang. Paparan sinar matahari pagi dapat membantu tubuh memproduksi vitamin D.",
+                "Suplemen vitamin sebaiknya dikonsumsi sesuai petunjuk dan tidak melebihi dosis harian yang direkomendasikan."
+            ],
+            "tidur": [
+                "Tidur yang cukup (7-8 jam) sangat penting untuk kesehatan fisik dan mental Anda.",
+                "Hindari penggunaan gadget setidaknya 1 jam sebelum tidur untuk mendapatkan kualitas tidur yang lebih baik.",
+                "Rutinitas tidur yang konsisten dapat membantu tubuh mengatur siklus tidur dengan lebih baik."
+            ],
+            "makan": [
+                "Pola makan seimbang dengan banyak sayuran, protein, dan karbohidrat kompleks sangat penting untuk kesehatan.",
+                "Makan dalam porsi kecil tapi sering dapat membantu menjaga kadar gula darah stabil sepanjang hari.",
+                "Hindari makanan olahan dan tinggi gula untuk kesehatan jangka panjang yang lebih baik."
+            ],
+            "olahraga": [
+                "Setidaknya 30 menit olahraga sedang setiap hari dapat meningkatkan kesehatan jantung dan mental Anda.",
+                "Pilih aktivitas fisik yang Anda nikmati agar lebih mudah dijadikan kebiasaan.",
+                "Jangan lupa pemanasan sebelum dan pendinginan setelah berolahraga untuk menghindari cedera."
+            ]
+        };
+
+        // Respons umum jika tidak ada kata kunci yang cocok
+        const defaultResponses = [
+            "Terima kasih atas pertanyaan Anda. Kesehatan adalah investasi terbaik, jaga selalu pola hidup sehat Anda.",
+            "Saya di sini untuk membantu Anda dengan informasi kesehatan. Apakah ada hal spesifik yang ingin Anda ketahui?",
+            "Kesehatan holistik meliputi fisik, mental, dan emosional. Penting untuk menjaga keseimbangan ketiganya.",
+            "Saya mengerti kekhawatiran Anda. Bicarakan dengan dokter untuk mendapatkan diagnosis dan saran yang tepat.",
+            "Ada banyak faktor yang mempengaruhi kesehatan. Istirahat cukup, makan seimbang, dan olahraga teratur adalah kuncinya."
+        ];
+
+        // Memproses kata kunci dari pesan
+        function getAIResponse(message) {
+            message = message.toLowerCase();
+            
+            // Cek apakah pesan mengandung kata kunci
+            for (const [keyword, responses] of Object.entries(keywordResponses)) {
+                if (message.includes(keyword)) {
+                    return responses[Math.floor(Math.random() * responses.length)];
+                }
+            }
+            
+            // Jika tidak ada kata kunci yang cocok, gunakan respons default
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        // Send message and receive response
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message) {
+                // Tambahkan pesan pengguna
+                addMessage(message, true);
+                messageInput.value = '';
+                
+                // Loading state
+                const typingIndicator = document.createElement('div');
+                typingIndicator.id = 'typing-indicator';
+                typingIndicator.className = 'flex gap-3 animate-slide-up';
+                typingIndicator.innerHTML = `
+                    <div class="w-8 h-8 bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-white">
+                        🤖
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-gray-800 p-3 rounded-2xl rounded-tl-none max-w-[80%] chat-message-ai">
+                            <p class="text-white">...</p>
+                        </div>
+                    </div>
+                `;
+                chatMessages.appendChild(typingIndicator);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Dapatkan respons dengan delay untuk simulasi pemrosesan
+                setTimeout(() => {
+                    const typingElement = document.getElementById('typing-indicator');
+                    if (typingElement) {
+                        typingElement.remove();
+                    }
+                    
+                    // Berikan respons berdasarkan kata kunci
+                    const aiResponse = getAIResponse(message);
+                    addMessage(aiResponse);
+                }, 1500);
+            }
+        }
+
+        // Tambah event listeners
+        sendButton.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        clearButton.addEventListener('click', function() {
+            chatMessages.innerHTML = '';
+            messageHistory = [
+                {
+                    role: "assistant",
+                    content: "Hello! I'm your AI health assistant. How can I help you today?"
+                }
+            ];
+            addMessage("Hello! I'm your AI health assistant. How can I help you today?");
+        });
+    </script>
+</body>
+</html> 
