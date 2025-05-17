@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicine - RememberMe</title>
-    <link href="./dist/output.css" rel="stylesheet">
+    <link href="output.css" rel="stylesheet">
     <link href="remember.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7749F8">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
         /* Override styles untuk Medicine page */
         .medicine-list-item {
@@ -89,11 +94,6 @@
             background-color: #7749F8 !important;
         }
         
-        /* Modal z-index handling */
-        #addMedicineModal {
-            z-index: 1000 !important;
-        }
-        
         /* Add button tidak overlap */
         .add-button {
             position: fixed !important;
@@ -117,6 +117,33 @@
             background-color: #6234E0 !important;
             transform: translateY(-2px) !important;
         }
+        
+        /* Pastikan main content dapat di-scroll tanpa tumpang tindih dengan bottom nav */
+        main {
+            padding-bottom: 100px !important;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #10B981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 9999;
+            opacity: 0.95;
+            transition: all 0.3s ease;
+        }
+        
+        .toast.hidden {
+            transform: translate(-50%, 100%);
+            opacity: 0;
+        }
     </style>
 </head>
 <body class="bg-background">
@@ -125,11 +152,11 @@
         <header class="sticky top-0 z-50 bg-background border-b border-gray-800 px-4 py-3">
             <div class="flex justify-between items-center">
                 <h1 class="text-xl font-bold text-white animate-fade-in">Medicine Schedule</h1>
-                <button class="p-2 text-primary hover:scale-110 transition-transform" onclick="showAddMedicineModal()">
+                <a href="add-medicine.html" class="p-2 text-primary hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                </button>
+                </a>
             </div>
         </header>
 
@@ -160,97 +187,25 @@
 
             <!-- Medicine List -->
             <div class="space-y-4" id="medicineList">
-                <!-- Morning -->
-                <div class="medicine-list-item transform hover:scale-[1.02] transition-transform animate-slide-up">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="medicine-time-label">Morning Medicine</h3>
-                            <p class="medicine-time">08:00 AM</p>
-                        </div>
-                        <span class="medicine-status">Now</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="medicine-item">
-                            <div class="medicine-icon">
-                                💊
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="medicine-name">Paracetamol</h4>
-                                <p class="medicine-dosage">1 tablet</p>
-                            </div>
-                            <button class="medicine-check" onclick="toggleMedicine(this)"></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Afternoon -->
-                <div class="medicine-list-item transform hover:scale-[1.02] transition-transform animate-slide-up" style="animation-delay: 0.1s;">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h3 class="medicine-time-label">Afternoon Medicine</h3>
-                            <p class="medicine-time">02:00 PM</p>
-                        </div>
-                        <span class="medicine-status later">Later</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="medicine-item">
-                            <div class="medicine-icon">
-                                💊
-                            </div>
-                            <div class="flex-1">
-                                <h4 class="medicine-name">Vitamin C</h4>
-                                <p class="medicine-dosage">1 tablet</p>
-                            </div>
-                            <button class="medicine-check" onclick="toggleMedicine(this)"></button>
-                        </div>
-                    </div>
-                </div>
+                <!-- List will be populated by JavaScript -->
             </div>
         </main>
 
-        <!-- Add Medicine Modal -->
-        <div id="addMedicineModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-            <div class="bg-gray-800 rounded-xl p-6 w-[320px] animate-slide-up">
-                <h3 class="text-lg font-semibold text-white mb-4">Add New Medicine</h3>
-                <form id="addMedicineForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-1">Medicine Name</label>
-                        <input type="text" placeholder="Enter medicine name" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-1">Time</label>
-                        <select class="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                            <option>Morning (08:00 AM)</option>
-                            <option>Afternoon (02:00 PM)</option>
-                            <option>Evening (08:00 PM)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-white mb-1">Dosage</label>
-                        <input type="text" placeholder="1 tablet" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
-                    </div>
-                    <div class="flex gap-3">
-                        <button type="button" onclick="hideAddMedicineModal()" class="flex-1 px-4 py-2 border border-gray-600 rounded-lg text-white hover:bg-gray-700 transition-colors">
-                            Cancel
-                        </button>
-                        <button type="submit" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition-colors">
-                            Add
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <!-- Toast notification -->
+        <div id="toast" class="toast hidden">
+            Medicine added successfully!
         </div>
 
         <!-- Add Medicine Button -->
-        <button class="add-button" onclick="showAddMedicineModal()">
+        <a href="add-medicine.html" class="add-button">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-        </button>
+        </a>
 
         <!-- Bottom Navigation -->
-        <nav class="fixed bottom-0 w-[390px] bg-gray-800 border-t border-gray-700 px-6 py-3">
-            <div class="grid grid-cols-5 gap-4">
+        <nav class="fixed bottom-0 w-[390px] bg-gray-800 border-t border-gray-700 px-4 py-3 z-40">
+            <div class="grid grid-cols-5 gap-2">
                 <a href="home.html" class="flex flex-col items-center text-gray-400 hover:text-primary transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -285,109 +240,42 @@
         </nav>
     </div>
 
+    <!-- Install PWA Section (hidden by default) -->
+    <section id="pwaInstallSection" class="fixed bottom-24 left-1/2 transform -translate-x-1/2 w-[350px] bg-gray-800 rounded-xl p-4 border border-gray-700 shadow-lg z-50 hidden animate-slide-up">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="icons/icon-96x96.png" alt="RememberMe" class="w-12 h-12 rounded-xl">
+                <div>
+                    <h3 class="text-white font-semibold">Instal RememberMe</h3>
+                    <p class="text-gray-300 text-sm">Tambahkan ke layar utama</p>
+                </div>
+            </div>
+            <button id="installPWA" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium">
+                Instal
+            </button>
+        </div>
+    </section>
+
+    <!-- Include JS files -->
+    <script src="medicine.js"></script>
+    <script src="pwa-installer.js"></script>
+    
+    <!-- Check for added medicine -->
     <script>
-        // Weekly Progress Chart
-        const ctx = document.getElementById('weeklyProgress').getContext('2d');
-        const weeklyProgress = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Medicine Taken',
-                    data: [100, 90, 95, 85, 88, 92, 0],
-                    borderColor: '#7749F8',
-                    backgroundColor: 'rgba(119, 73, 248, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
-                            },
-                            color: '#9CA3AF'
-                        },
-                        grid: {
-                            color: 'rgba(156, 163, 175, 0.1)'
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: '#9CA3AF'
-                        },
-                        grid: {
-                            color: 'rgba(156, 163, 175, 0.1)'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        });
-
-        // Toggle Medicine Status
-        function toggleMedicine(button) {
-            button.classList.toggle('active');
-            updateProgress();
-        }
-
-        // Update progress
-        function updateProgress() {
-            // Here you would update your progress data
-            console.log("Progress updated");
-        }
-
-        // Date Navigation
-        let currentDate = new Date();
-        
-        function updateDateDisplay() {
-            const options = { weekday: 'long', day: 'numeric', month: 'long' };
-            document.getElementById('currentDate').textContent = currentDate.toLocaleDateString('en-US', options);
-        }
-
-        function changeDate(days) {
-            currentDate.setDate(currentDate.getDate() + days);
-            updateDateDisplay();
-        }
-
-        // Update display on load
-        updateDateDisplay();
-
-        // Modal Functions
-        function showAddMedicineModal() {
-            document.getElementById('addMedicineModal').classList.remove('hidden');
-        }
-        
-        function hideAddMedicineModal() {
-            document.getElementById('addMedicineModal').classList.add('hidden');
-        }
-        
-        // Form submission for adding medicines
-        document.getElementById('addMedicineForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const form = e.target;
-            const name = form.elements[0].value;
-            const time = form.elements[1].value;
-            const dosage = form.elements[2].value;
+        // Check URL for added parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('added') === 'true') {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('hidden');
             
-            // Here you would save the new medicine data
-            console.log("Adding medicine:", name, time, dosage);
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
             
-            // Close modal
-            hideAddMedicineModal();
-            
-            // Temp notification
-            alert("Medicine added successfully!");
-        });
+            // Clean URL
+            window.history.replaceState({}, document.title, 'medicine.html');
+        }
     </script>
 </body>
 </html> 

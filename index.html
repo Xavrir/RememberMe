@@ -4,32 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RememberMe - Your Digital Memory Box</title>
-    <link href="./dist/output.css" rel="stylesheet">
+    <link href="output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7749F8">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        /* Perbaikan untuk responsivitas dan layout */
+        body {
+            background-color: #111827;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 390px;
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            background-color: #111827;
+            overflow: hidden;
+        }
+        
+        main {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Background element design */
+        .bg-gradient {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 1;
+        }
+        
+        .bg-gradient-1 {
+            top: 20%;
+            left: -30px;
+            background: rgba(119, 73, 248, 0.2);
+        }
+        
+        .bg-gradient-2 {
+            bottom: 10%;
+            right: -30px;
+            background: rgba(98, 52, 224, 0.15);
+        }
+        
+        /* Animasi */
+        .animate-fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .animate-slide-up {
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+        
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Button styles */
+        .btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem 0;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: #7749F8;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #6234E0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(119, 73, 248, 0.3);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: #7749F8;
+            border: 2px solid #7749F8;
+        }
+        
+        .btn-outline:hover {
+            background-color: #7749F8;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(119, 73, 248, 0.3);
+        }
+    </style>
 </head>
-<body class="bg-background font-poppins">
-    <div class="max-w-[390px] min-h-[844px] mx-auto bg-background relative">
-        <main class="flex flex-col items-center justify-center min-h-[844px] p-6">
+<body>
+    <div class="container">
+        <!-- Background gradient elements -->
+        <div class="bg-gradient bg-gradient-1"></div>
+        <div class="bg-gradient bg-gradient-2"></div>
+        
+        <main>
             <div class="text-center mb-12 animate-fade-in">
-                <h1 class="text-4xl font-bold text-primary mb-4">RememberMe</h1>
+                <h1 class="text-4xl font-bold text-[#7749F8] mb-4">RememberMe</h1>
                 <p class="text-white text-lg">Your Digital Memory Box</p>
             </div>
 
-            <div class="w-full space-y-4 animate-slide-up">
-                <a href="signin.html" 
-                   class="block w-full bg-primary text-white text-center py-3 rounded-lg font-semibold hover:bg-secondary transition duration-200">
-                    Sign In
-                </a>
-                <a href="signup.html" 
-                   class="block w-full bg-background text-primary text-center py-3 rounded-lg font-semibold border-2 border-primary hover:bg-primary hover:text-white transition duration-200">
-                    Sign Up
-                </a>
+            <div class="w-full space-y-4">
+                <a href="signin.html" class="btn btn-primary animate-slide-up">Sign In</a>
+                <a href="signup.html" class="btn btn-outline animate-slide-up delay-100">Sign Up</a>
+                <a href="home.html" class="btn btn-primary animate-slide-up delay-200" style="background-color: #4F46E5;">Continue Without Account</a>
             </div>
 
-            <div class="mt-8 text-center animate-fade-in">
-                <p class="text-gray-400">Need help? <a href="#" class="text-primary font-semibold">Contact Support</a></p>
+            <!-- Install PWA Button (hidden by default) -->
+            <div class="mt-6 w-full animate-fade-in delay-200">
+                <button id="installPWA" class="hidden btn btn-outline">
+                    Install RememberMe App
+                </button>
+            </div>
+
+            <div class="mt-8 text-center animate-fade-in delay-200">
+                <p class="text-gray-400">Need help? <a href="#" class="text-[#7749F8] font-semibold">Contact Support</a></p>
             </div>
         </main>
     </div>
+
+    <!-- PWA Installation Script -->
+    <script src="pwa-installer.js"></script>
+
+    <!-- Redirect to home if in standalone mode -->
+    <script>
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone || 
+            document.referrer.includes('android-app://')) {
+            window.location.href = 'home.html';
+        }
+    </script>
 </body>
 </html>

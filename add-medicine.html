@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Medicine - RememberMe</title>
+    <link href="output.css" rel="stylesheet">
+    <link href="remember.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7749F8">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body class="bg-background font-poppins">
+    <div class="max-w-[390px] min-h-[844px] mx-auto bg-background relative">
+        <!-- Header -->
+        <header class="sticky top-0 z-50 bg-background border-b border-gray-700 px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="medicine.html" class="p-2 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </a>
+                <h1 class="text-xl font-bold text-white">Add Medicine</h1>
+                <div class="w-10"></div> <!-- Spacer untuk balance -->
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="p-4">
+            <form id="addMedicineForm" class="space-y-6">
+                <!-- Medicine Name -->
+                <div class="space-y-2 animate-fade-in">
+                    <label for="medicineName" class="block text-white font-medium">Medicine Name</label>
+                    <input type="text" id="medicineName" name="medicineName" required
+                        class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                        placeholder="Enter medicine name">
+                </div>
+
+                <!-- Dosage -->
+                <div class="space-y-2 animate-fade-in" style="animation-delay: 0.1s;">
+                    <label for="dosage" class="block text-white font-medium">Dosage</label>
+                    <input type="text" id="dosage" name="dosage" required
+                        class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                        placeholder="Enter dosage (e.g. 1 tablet)">
+                </div>
+
+                <!-- Schedule Time -->
+                <div class="space-y-2 animate-fade-in" style="animation-delay: 0.2s;">
+                    <label class="block text-white font-medium">Schedule Time</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <label class="flex items-center justify-center p-3 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer hover:border-primary transition-all">
+                            <input type="radio" name="scheduleTime" value="morning" class="sr-only" checked>
+                            <div class="text-center space-y-1 schedule-option">
+                                <div class="text-lg">🌅</div>
+                                <div class="text-sm text-white">Morning</div>
+                                <div class="text-xs text-gray-400">8:00 AM</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center justify-center p-3 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer hover:border-primary transition-all">
+                            <input type="radio" name="scheduleTime" value="afternoon" class="sr-only">
+                            <div class="text-center space-y-1 schedule-option">
+                                <div class="text-lg">☀️</div>
+                                <div class="text-sm text-white">Afternoon</div>
+                                <div class="text-xs text-gray-400">2:00 PM</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center justify-center p-3 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer hover:border-primary transition-all">
+                            <input type="radio" name="scheduleTime" value="evening" class="sr-only">
+                            <div class="text-center space-y-1 schedule-option">
+                                <div class="text-lg">🌙</div>
+                                <div class="text-sm text-white">Evening</div>
+                                <div class="text-xs text-gray-400">8:00 PM</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Notes (Optional) -->
+                <div class="space-y-2 animate-fade-in" style="animation-delay: 0.3s;">
+                    <label for="notes" class="block text-white font-medium">Notes (Optional)</label>
+                    <textarea id="notes" name="notes" rows="3" 
+                        class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:border-primary focus:ring-2 focus:ring-primary focus:outline-none transition-all"
+                        placeholder="Add any special instructions"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-4 animate-fade-in" style="animation-delay: 0.4s;">
+                    <button type="submit" class="w-full py-3 bg-primary text-white rounded-xl font-medium hover:bg-indigo-600 transition-colors">
+                        Add Medicine
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- Install PWA Section (hidden by default) -->
+    <section id="pwaInstallSection" class="fixed bottom-24 left-1/2 transform -translate-x-1/2 w-[350px] bg-gray-800 rounded-xl p-4 border border-gray-700 shadow-lg z-50 hidden animate-slide-up">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="icons/icon-96x96.png" alt="RememberMe" class="w-12 h-12 rounded-xl">
+                <div>
+                    <h3 class="text-white font-semibold">Instal RememberMe</h3>
+                    <p class="text-gray-300 text-sm">Tambahkan ke layar utama</p>
+                </div>
+            </div>
+            <button id="installPWA" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium">
+                Instal
+            </button>
+        </div>
+    </section>
+
+    <!-- JavaScript to handle form submission -->
+    <script>
+        // Styling for selected schedule option
+        const scheduleOptions = document.querySelectorAll('input[name="scheduleTime"]');
+        scheduleOptions.forEach(option => {
+            option.addEventListener('change', function() {
+                document.querySelectorAll('.schedule-option').forEach(el => {
+                    el.closest('label').classList.remove('border-primary');
+                });
+                if (this.checked) {
+                    this.closest('label').classList.add('border-primary');
+                }
+            });
+        });
+
+        // Set initial selected style
+        document.querySelector('input[name="scheduleTime"]:checked').closest('label').classList.add('border-primary');
+
+        // Handle form submission
+        document.getElementById('addMedicineForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const medicineName = document.getElementById('medicineName').value;
+            const dosage = document.getElementById('dosage').value;
+            const scheduleTime = document.querySelector('input[name="scheduleTime"]:checked').value;
+            const notes = document.getElementById('notes').value;
+            
+            // Get existing medicine data from localStorage
+            const MEDICINE_STORAGE_KEY = 'rememberMeMedicines';
+            const medicineData = JSON.parse(localStorage.getItem(MEDICINE_STORAGE_KEY)) || {
+                "morning": { time: "08:00 AM", title: "Morning Medicine", medicines: [] },
+                "afternoon": { time: "02:00 PM", title: "Afternoon Medicine", medicines: [] },
+                "evening": { time: "08:00 PM", title: "Evening Medicine", medicines: [] }
+            };
+            
+            // Generate new ID (simple implementation)
+            const newId = Date.now();
+            
+            // Add new medicine to the selected time slot
+            medicineData[scheduleTime].medicines.push({
+                id: newId,
+                name: medicineName,
+                dosage: dosage,
+                notes: notes,
+                taken: false
+            });
+            
+            // Save updated data
+            localStorage.setItem(MEDICINE_STORAGE_KEY, JSON.stringify(medicineData));
+            
+            // Redirect back to medicine page
+            window.location.href = 'medicine.html?added=true';
+        });
+    </script>
+    
+    <!-- PWA Installation Script -->
+    <script src="pwa-installer.js"></script>
+</body>
+</html> 

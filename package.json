@@ -3,9 +3,28 @@
   "version": "1.0.0",
   "description": "Your Digital Memory Box",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch"
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build:prod": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "capacitor:init": "npx cap init RememberMe io.rememberme.app --web-dir ./",
+    "capacitor:add:android": "npx cap add android",
+    "capacitor:add:ios": "npx cap add ios",
+    "capacitor:sync": "npx cap sync",
+    "capacitor:open:android": "npx cap open android",
+    "capacitor:open:ios": "npx cap open ios",
+    "capacitor:build:android": "npm run build:prod && npx cap sync android && npx cap open android",
+    "capacitor:build:ios": "npm run build:prod && npx cap sync ios && npx cap open ios",
+    "pwa:build": "npm run build:prod && workbox generateSW workbox-config.js",
+    "pwa:serve": "http-server . -p 8080 -c-1"
   },
   "devDependencies": {
-    "tailwindcss": "^3.3.0"
+    "@capacitor/android": "^5.7.8",
+    "@capacitor/cli": "^5.7.8",
+    "@capacitor/core": "^5.7.8",
+    "@capacitor/ios": "^5.7.8",
+    "@capacitor/splash-screen": "^5.0.8",
+    "http-server": "^14.1.1",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.8.3",
+    "workbox-cli": "^7.0.0"
   }
-} 
+}
