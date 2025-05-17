@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366F1">
-    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon.svg">
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -165,12 +165,12 @@
 
             <!-- Quick Actions -->
             <section style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;" class="animate-slide-up">
-                <div class="quick-action quick-action-medicine">
+                <div class="quick-action quick-action-medicine" onclick="window.location.href='medicine.html'">
                     <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💊</div>
                     <h3 style="font-weight: 600; margin-bottom: 0.25rem;" class="text-white">Medicine</h3>
                     <p style="font-size: 0.875rem;" class="text-gray-300">Track your medications</p>
                 </div>
-                <div class="quick-action">
+                <div class="quick-action" onclick="window.location.href='ai-chat.html'">
                     <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🤖</div>
                     <h3 style="font-weight: 600; margin-bottom: 0.25rem;" class="text-white">AI Chat</h3>
                     <p style="font-size: 0.875rem;" class="text-gray-300">Get help instantly</p>

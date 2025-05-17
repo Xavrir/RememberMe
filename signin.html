@@ -3,102 +3,418 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In - RememberMe</title>
+    <title>Masuk - RememberMe</title>
     <link href="output.css" rel="stylesheet">
     <link href="remember.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Override styles untuk signin page */
-        .bg-background {
-            background-color: #111827 !important;
+        /* Basic styles */
+        body {
+            background-color: #111827;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
         }
         
-        .text-white {
-            color: #FFFFFF !important;
+        .container {
+            max-width: 390px;
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            background-color: #111827;
+            margin: 0 auto;
+            overflow: hidden;
         }
         
-        .text-gray-400 {
-            color: #9CA3AF !important;
+        /* Background element design */
+        .bg-gradient {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 1;
         }
         
-        .signin-input {
-            background-color: #1F2937 !important;
-            color: #FFFFFF !important;
-            border: 1px solid #374151 !important;
+        .bg-gradient-1 {
+            top: 10%;
+            left: -30px;
+            background: rgba(119, 73, 248, 0.2);
         }
         
-        .signin-input::placeholder {
-            color: #6B7280 !important;
+        .bg-gradient-2 {
+            bottom: 30%;
+            right: -30px;
+            background: rgba(98, 52, 224, 0.15);
+        }
+        
+        main {
+            position: relative;
+            z-index: 10;
+            padding: 1.5rem;
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background-color: #111827;
+            border-bottom: 1px solid #374151;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .back-button {
+            padding: 0.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            color: #7749F8;
+            transform: translateX(-2px);
+        }
+        
+        .page-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin-left: 0.5rem;
+        }
+        
+        /* Logo and icon */
+        .login-logo-container {
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            background-color: #7749F8;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 20px rgba(119, 73, 248, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-logo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        }
+        
+        .login-icon {
+            font-size: 2.5rem;
+            color: white;
+        }
+        
+        /* Form styling */
+        .form-header {
+            margin-bottom: 2rem;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .form-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-subtitle {
+            color: #9CA3AF;
+            font-size: 0.875rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            animation: slideUp 0.8s ease-out;
+        }
+        
+        .form-group:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: #1F2937;
+            color: white;
+            border: 1px solid #374151;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #7749F8;
+            box-shadow: 0 0 0 2px rgba(119, 73, 248, 0.25);
+        }
+        
+        .form-input::placeholder {
+            color: #6B7280;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0;
+            animation: slideUp 0.8s ease-out;
+            animation-delay: 0.2s;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 1.2rem;
+            height: 1.2rem;
+            background-color: #1F2937;
+            border: 1px solid #374151;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .remember-checkbox:checked {
+            background-color: #7749F8;
+            border-color: #7749F8;
+        }
+        
+        .remember-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 0.75rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .remember-label {
+            color: white;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+        
+        .forgot-link {
+            color: #7749F8;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 0.9rem 0;
+            border-radius: 0.8rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-top: 2rem;
+            animation: slideUp 0.8s ease-out;
+            animation-delay: 0.3s;
         }
         
         .btn-primary {
-            background-color: #7749F8 !important;
-            color: #FFFFFF !important;
+            background-color: #7749F8;
+            color: white;
         }
         
         .btn-primary:hover {
-            background-color: #6234E0 !important;
+            background-color: #6234E0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(119, 73, 248, 0.3);
+        }
+        
+        /* Password toggle */
+        .password-field {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6B7280;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0.25rem;
+        }
+        
+        .password-toggle:hover {
+            color: #7749F8;
+        }
+        
+        .signup-link {
+            margin-top: 2rem;
+            text-align: center;
+            color: #9CA3AF;
+            font-size: 0.875rem;
+            animation: fadeIn 1s ease-in-out;
+            animation-delay: 0.4s;
+        }
+        
+        .signup-link a {
+            color: #7749F8;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Animasi */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Smartphone optimizations */
+        @media (max-width: 390px) {
+            .form-input {
+                font-size: 16px; /* Prevent zoom on focus on iOS */
+            }
         }
     </style>
 </head>
-<body class="bg-background font-poppins">
-    <div class="max-w-[390px] min-h-[844px] mx-auto bg-background relative">
+<body>
+    <div class="container">
+        <!-- Background gradient elements -->
+        <div class="bg-gradient bg-gradient-1"></div>
+        <div class="bg-gradient bg-gradient-2"></div>
+        
         <!-- Header -->
-        <header class="sticky top-0 z-50 bg-background border-b border-gray-700 px-4 py-3">
-            <div class="flex items-center">
-                <a href="index.html" class="p-2 text-white hover:text-primary transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </a>
-                <h1 class="text-xl font-bold text-white ml-2">Sign In</h1>
-            </div>
+        <header>
+            <a href="index.html" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+            <h1 class="page-title">Masuk</h1>
         </header>
 
         <!-- Main Content -->
-        <main class="p-6">
-            <div class="mb-8 text-center animate-fade-in">
-                <h2 class="text-2xl font-bold text-white mb-2">Welcome Back!</h2>
-                <p class="text-gray-400">Sign in to access your account</p>
+        <main>
+            <!-- Logo -->
+            <div class="login-logo-container">
+                <div class="login-logo">
+                    <span class="login-icon">🔐</span>
+                </div>
+            </div>
+            
+            <div class="form-header">
+                <h2 class="form-title">Selamat Datang Kembali!</h2>
+                <p class="form-subtitle">Masuk untuk melanjutkan</p>
             </div>
 
-            <form id="loginForm" class="space-y-6 animate-slide-up">
-                <div class="space-y-2">
-                    <label for="email" class="block text-sm font-medium text-white">Email</label>
-                    <input type="email" id="email" name="email" 
-                        class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent signin-input"
-                        placeholder="Enter your email">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input"
+                        placeholder="Masukkan email Anda" required>
                 </div>
 
-                <div class="space-y-2">
-                    <label for="password" class="block text-sm font-medium text-white">Password</label>
-                    <input type="password" id="password" name="password" 
-                        class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent signin-input"
-                        placeholder="Enter your password">
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input type="checkbox" id="remember" name="remember" class="h-4 w-4 text-primary focus:ring-primary bg-gray-800 border-gray-700 rounded">
-                        <label for="remember" class="ml-2 block text-sm text-white">Remember me</label>
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="password-field">
+                        <input type="password" id="password" name="password" class="form-input"
+                            placeholder="Masukkan password Anda" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="password-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
                     </div>
-                    <a href="#" class="text-sm text-primary hover:text-secondary transition-colors">Forgot password?</a>
                 </div>
 
-                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-secondary transition duration-200 btn-primary">
-                    Sign In
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember" name="remember" class="remember-checkbox">
+                        <label for="remember" class="remember-label">Ingat saya</label>
+                    </div>
+                    <a href="#" class="forgot-link">Lupa password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    Masuk
                 </button>
             </form>
 
-            <div class="mt-8 text-center">
-                <p class="text-gray-400">Don't have an account? 
-                    <a href="signup.html" class="text-primary font-semibold hover:text-secondary transition-colors">Sign Up</a>
+            <div class="signup-link">
+                <p>Belum punya akun? 
+                    <a href="signup.html">Daftar sekarang</a>
                 </p>
             </div>
         </main>
     </div>
 
     <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('password-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                `;
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                `;
+            }
+        }
+
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -110,7 +426,7 @@
                 // Redirect to home page after successful login
                 window.location.href = 'home.html';
             } else {
-                alert('Invalid credentials. Please try again.');
+                alert('Email atau password salah. Silakan coba lagi.');
             }
         });
     </script>

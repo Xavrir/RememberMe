@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RememberMe - Icon Placeholders</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #111827;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #7749F8;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .icon-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 0 auto;
+            max-width: 960px;
+        }
+        .icon-box {
+            background-color: #1F2937;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .icon {
+            width: 100%;
+            aspect-ratio: 1;
+            background-color: #7749F8;
+            border-radius: 24px;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-72 { border-radius: 16px; }
+        .icon-96 { border-radius: 18px; }
+        .icon-128 { border-radius: 20px; }
+        .icon-144 { border-radius: 22px; }
+        .icon-152 { border-radius: 22px; }
+        .icon-192 { border-radius: 24px; }
+        .icon-384 { border-radius: 32px; }
+        .icon-512 { border-radius: 32px; }
+        
+        .icon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        }
+        
+        .icon-text {
+            color: white;
+            font-size: 40px;
+        }
+        
+        .icon-size {
+            color: #9CA3AF;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .download-btn {
+            display: block;
+            margin: 30px auto;
+            background-color: #7749F8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            background-color: #6234E0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(119, 73, 248, 0.4);
+        }
+        
+        .info {
+            max-width: 600px;
+            margin: 30px auto;
+            background-color: #1F2937;
+            padding: 20px;
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+        
+        .info p {
+            margin: 10px 0;
+        }
+        
+        @media (max-width: 600px) {
+            .icon-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>RememberMe Icon Placeholders</h1>
+    
+    <div class="info">
+        <p>Ini adalah tampilan placeholder untuk ikon aplikasi RememberMe. Icon-icon ini nantinya akan diganti dengan desain sungguhan untuk PWA (Progressive Web App).</p>
+        <p>Ukuran ikon mengikuti standar yang diperlukan oleh manifest.json.</p>
+    </div>
+    
+    <div class="icon-container">
+        <div class="icon-box">
+            <div class="icon icon-72">
+                <div class="icon-text">💊</div>
+            </div>
+            <div class="icon-size">72x72px</div>
+        </div>
+        
+        <div class="icon-box">
+            <div class="icon icon-96">
+                <div class="icon-text">💊</div>
+            </div>
+            <div class="icon-size">96x96px</div>
+        </div>
+        
+        <div class="icon-box">
+            <div class="icon icon-128">
+                <div class="icon-text">💊</div>
+            </div>
+            <div class="icon-size">128x128px</div>
+        </div>
+        
+        <div class="icon-box">
+            <div class="icon icon-144">
+                <div class="icon-text">💊</div>
+            </div>
+            <div class="icon-size">144x144px</div>
+        </div>
+        
+        <div class="icon-box">
+            <div class="icon icon-152">
+                <div class="icon-text">💊</div>
+            </div>
+            <div class="icon-size">152x152px</div>
+        </div>
+        
+        <div class="icon-box">
+            <div class="icon icon-192">
+                <div class="icon-text">💊</div>
+            </div>
+            <div class="icon-size">192x192px</div>
+        </div>
+        
+        <div class="icon-box">
+            <div class="icon icon-384">
+                <div class="icon-text">💊</div>
+            </div>
+            <div class="icon-size">384x384px</div>
+        </div>
+        
+        <div class="icon-box">
+            <div class="icon icon-512">
+                <div class="icon-text">💊</div>
+            </div>
+            <div class="icon-size">512x512px</div>
+        </div>
+    </div>
+    
+    <button class="download-btn" onclick="alert('Fitur download akan diimplementasikan nanti')">Download Semua Icon</button>
+    
+    <script>
+        // Script untuk membuat file icon placeholder dari halaman ini akan ditambahkan nanti
+    </script>
+</body>
+</html> 

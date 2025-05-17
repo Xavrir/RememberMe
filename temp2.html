@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Asisten - RememberMe</title>
+    <link href="output.css" rel="stylesheet">
+    <link href="remember.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Chat-specific styles */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 200px);
+            max-height: calc(100vh - 200px);
+            background-color: #1F2937;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        body.bg-gray-900 {
+            background-color: #111827;
+        }
+
+        .app-container {
+            max-width: 390px;
+            height: 100vh;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #111827;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #111827;
+            border-bottom: 1px solid #374151;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .app-header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            color: white;
+        }
+
+        .back-button, .icon-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .app-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            padding: 0.75rem 0;
+            background-color: #1F2937;
+            border-top: 1px solid #374151;
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #9CA3AF;
+            font-size: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .nav-item svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item.active {
+            color: #7749F8;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 0.8rem 1rem;
+            border-radius: 16px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .user-message {
+            background-color: #6234E0;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .ai-message {
+            background-color: #2D3748;
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 0.8rem;
+            background-color: #1F2937;
+            border-top: 1px solid #374151;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border-radius: 24px;
+            border: none;
+            background-color: #374151;
+            color: white;
+        }
+        
+        .chat-input button {
+            margin-left: 0.5rem;
+            background-color: #7749F8;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+        }
+        
+        .chat-input button svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .chat-input button:disabled {
+            background-color: #4B5563;
+            opacity: 0.7;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            padding: 0.5rem;
+            align-self: flex-start;
+        }
+        
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #9CA3AF;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: bounce 1.3s linear infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        
+        @keyframes bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* AI Avatar styling */
+        .ai-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background-color: #111827;
+            border-bottom: 1px solid #374151;
+        }
+        
+        .ai-avatar {
+            width: 48px;
+            height: 48px;
+            background-color: #7749F8;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .ai-info h3 {
+            margin: 0;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .ai-info p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #9CA3AF;
+        }
+        
+        /* Examples section */
+        .examples {
+            margin-top: 1rem;
+        }
+        
+        .example-chip {
+            display: inline-block;
+            background-color: rgba(119, 73, 248, 0.1);
+            color: #7749F8;
+            border: 1px solid #7749F8;
+            border-radius: 16px;
+            padding: 0.5rem 1rem;
+            margin: 0.3rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .example-chip:hover {
+            background-color: rgba(119, 73, 248, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-poppins">
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <a href="home.html" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+            <h1>AI Asisten</h1>
+            <div class="header-actions">
+                <button id="clearChat" class="icon-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+        
+        <main class="app-content">
+            <!-- AI Assistant Info -->
+            <div class="ai-header">
+                <div class="ai-avatar">
+                    💊
+                </div>
+                <div class="ai-info">
+                    <h3>RememberMe AI</h3>
+                    <p>Asisten kesehatan digital Anda</p>
+                </div>
+            </div>
+            
+            <!-- Chat Area -->
+            <div class="chat-container">
+                <div id="chatMessages" class="chat-messages">
+                    <!-- Messages will be inserted here -->
+                    <div class="ai-message message">
+                        <p>Halo! Saya asisten RememberMe yang siap membantu Anda dengan informasi kesehatan dan pengobatan. Apa yang ingin Anda tanyakan hari ini?</p>
+                    </div>
+                </div>
+                
+                <!-- Chat Input -->
+                <div class="chat-input">
+                    <input type="text" id="userInput" placeholder="Tulis pesan Anda..." autocomplete="off">
+                    <button id="sendButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Suggested Questions -->
+            <div class="examples mt-4">
+                <h4 class="text-sm font-medium text-gray-400 mb-2">Tanya tentang:</h4>
+                <div class="example-chips">
+                    <div class="example-chip">Cara minum obat yang benar</div>
+                    <div class="example-chip">Efek samping paracetamol</div>
+                    <div class="example-chip">Berapa lama demam biasanya berlangsung?</div>
+                    <div class="example-chip">Gejala tekanan darah tinggi</div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Navigation Footer -->
+        <nav class="app-nav">
+            <a href="home.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Beranda</span>
+            </a>
+            <a href="medicine.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+                <span>Obat</span>
+            </a>
+            <a href="ai-chat.html" class="nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+                <span>AI Chat</span>
+            </a>
+            <a href="sos.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <span>SOS</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <span>Profil</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Import Gemini AI Assistant -->
+    <script src="ai-assistant.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Clear localStorage chat history to prevent model ID issues
+            localStorage.removeItem('chatHistory');
+            
+            // Initialize the AI Assistant
+            const assistant = new AIAssistant();
+            await assistant.initialize();
+            
+            const chatMessages = document.getElementById('chatMessages');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            const clearChatButton = document.getElementById('clearChat');
+            const exampleChips = document.querySelectorAll('.example-chip');
+            
+            // Status indikator jaringan
+            let isOnline = navigator.onLine;
+            
+            // Pantau status jaringan
+            window.addEventListener('online', () => {
+                isOnline = true;
+                addStatusMessage('Anda kembali online. Anda dapat melanjutkan percakapan.');
+            });
+            
+            window.addEventListener('offline', () => {
+                isOnline = false;
+                addStatusMessage('Anda sedang offline. Percakapan mungkin tidak berfungsi dengan baik.');
+            });
+            
+            // Tampilkan pesan status
+            function addStatusMessage(message) {
+                const statusDiv = document.createElement('div');
+                statusDiv.classList.add('network-status');
+                statusDiv.textContent = message;
+                statusDiv.style.textAlign = 'center';
+                statusDiv.style.padding = '0.5rem';
+                statusDiv.style.margin = '0.5rem 0';
+                statusDiv.style.backgroundColor = '#2D3748';
+                statusDiv.style.borderRadius = '8px';
+                statusDiv.style.fontSize = '0.8rem';
+                statusDiv.style.color = '#9CA3AF';
+                chatMessages.appendChild(statusDiv);
+                scrollToBottom();
+            }
+            
+            // Load chat history
+            function loadChatHistory() {
+                // Clear existing messages except the welcome message
+                chatMessages.innerHTML = '';
+                
+                // Add all messages from history
+                for (const msg of assistant.messageHistory) {
+                    // Skip the system prompt
+                    if (msg.role === 'system') {
+                        continue;
+                    }
+                    
+                    addMessageToUI(msg.role, msg.content);
+                }
+                
+                // If no messages (except system prompt), add welcome message
+                if (chatMessages.children.length === 0) {
+                    addMessageToUI('assistant', 'Halo! Saya asisten RememberMe yang siap membantu Anda dengan informasi kesehatan dan pengobatan. Apa yang ingin Anda tanyakan hari ini?');
+                }
+                
+                // Show online/offline status if needed
+                if (!isOnline) {
+                    addStatusMessage('Anda sedang offline. Percakapan mungkin tidak berfungsi dengan baik.');
+                }
+                
+                // Scroll to bottom
+                scrollToBottom();
+            }
+            
+            // Add message to UI
+            function addMessageToUI(role, content) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                
+                if (role === 'user') {
+                    messageDiv.classList.add('user-message');
+                } else {
+                    messageDiv.classList.add('ai-message');
+                }
+                
+                const paragraph = document.createElement('p');
+                paragraph.textContent = content;
+                messageDiv.appendChild(paragraph);
+                
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+            
+            // Add typing indicator
+            function addTypingIndicator() {
+                const indicator = document.createElement('div');
+                indicator.classList.add('typing-indicator', 'message', 'ai-message');
+                indicator.id = 'typingIndicator';
+                
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.createElement('span');
+                    indicator.appendChild(dot);
+                }
+                
+                chatMessages.appendChild(indicator);
+                scrollToBottom();
+            }
+            
+            // Remove typing indicator
+            function removeTypingIndicator() {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            }
+            
+            // Scroll to bottom of chat
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Handle sending message
+            async function sendMessage() {
+                const message = userInput.value.trim();
+                
+                if (message === '') return;
+                
+                // Disable input while processing
+                userInput.value = '';
+                userInput.disabled = true;
+                sendButton.disabled = true;
+                
+                // Add user message to UI
+                addMessageToUI('user', message);
+                
+                // Show typing indicator
+                addTypingIndicator();
+                
+                try {
+                    // Periksa apakah online
+                    if (!navigator.onLine) {
+                        throw new Error('Tidak ada koneksi internet');
+                    }
+                    
+                    // Get response from AI
+                    const response = await assistant.sendMessage(message);
+                    
+                    // Remove typing indicator
+                    removeTypingIndicator();
+                    
+                    // Add AI response to UI
+                    addMessageToUI('assistant', response);
+                } catch (error) {
+                    // Remove typing indicator
+                    removeTypingIndicator();
+                    
+                    // Show error message
+                    const errorMsg = error.message.includes('internet') 
+                        ? 'Maaf, tidak dapat terhubung ke server. Silakan periksa koneksi internet Anda dan coba lagi.' 
+                        : `Maaf, terjadi kesalahan: ${error.message}`;
+                    
+                    addMessageToUI('assistant', errorMsg);
+                    console.error('AI Assistant error:', error);
+                } finally {
+                    // Re-enable input
+                    userInput.disabled = false;
+                    sendButton.disabled = false;
+                    userInput.focus();
+                }
+            }
+            
+            // Handle clearing chat
+            function clearChat() {
+                if (confirm('Hapus seluruh riwayat chat?')) {
+                    // Clear chat using the assistant's clearHistory method
+                    assistant.clearHistory();
+                    
+                    // Reset UI
+                    loadChatHistory();
+                }
+            }
+            
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            clearChatButton.addEventListener('click', clearChat);
+            
+            // Handle example chips
+            exampleChips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    userInput.value = chip.textContent;
+                    sendMessage();
+                });
+            });
+            
+            // Load initial chat history
+            loadChatHistory();
+        });
+    </script>
+</body>
+</html> 
